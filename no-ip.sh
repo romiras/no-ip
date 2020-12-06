@@ -94,7 +94,7 @@ fi
 
 if [ -n "$DETECTIP" ]
 then
-	IP=$(wget -qO- "http://myexternalip.com/raw")
+	IP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 fi
 
 
