@@ -16,18 +16,14 @@ This script has one dependency, which is wget. This is usually installed by defa
 Usage:
 ------
 
-      no-ip.sh -u=username -p=password -h=host.sample.com -d=true -l=/path/to/logfile.log
+      no-ip.sh -a=authentication -h=host.sample.com -d=true -l=/path/to/logfile.log
 
 
 Parameters:
 
-    -u, --username 
+    -a, --authentication
 
-Username to logon to no-ip.com.
-
-    -p, --password
-
-Password to logon to no-ip.com.
+Base64-encoded authentication credentials (user:password) to logon to no-ip.com.
 
     -h, --hostname
 
@@ -62,7 +58,7 @@ Examples:
 
 Runs the script with the settings in the config file in the default locaion /etc/no-ip/no-ip.conf
 
-    no-ip.sh -u=username -p=password -h=host.sample.com -d=true -l=/path/to/logfile.log
+    no-ip.sh -a=authentication -h=host.sample.com -d=true -l=/path/to/logfile.log
 
 Does a one-time update, detecting the UP and logging the results
 
@@ -81,8 +77,7 @@ The config file uses a simple syntax to define parameters. Any command line para
 
 Example:
 
-    user=username 
-    password=password 
+    authentication=dXNlcm5hbWU6cGFzc3dvcmQ=
     hostname=hostname.example.com
     logfile=/var/log/no-ip.log
     interval=10
@@ -95,10 +90,10 @@ Installation:
 **Before installing the script, download and extract the files to your local machine. The instructions assume your are in the no-ip-master folder.**
 
       cd ~
-      wget https://github.com/theonemule/no-ip/archive/master.zip
+      wget https://github.com/romiras/no-ip/archive/master.zip
       unzip master.zip
       cd no-ip-master
-      
+
 
 Method 1: crontabs
 
@@ -119,8 +114,7 @@ Here's how to run the script as root.
 
     sudo nano /etc/no-ip/no-ip.conf
     
-    user=username 
-    password=password 
+    authentication=dXNlcm5hbWU6cGFzc3dvcmQ=
     hostname=hostname.example.com
     logfile=/var/log/no-ip.log
     detectip=true
@@ -162,8 +156,7 @@ Make sure root has execute permissions on the script, read permissions on the co
 
     sudo nano /etc/no-ip/no-ip.conf
     
-    user=username 
-    password=password 
+    authentication=dXNlcm5hbWU6cGFzc3dvcmQ=
     hostname=hostname.example.com
     logfile=/var/log/no-ip.log
     interval=10
@@ -192,6 +185,3 @@ Make sure root has execute permissions on the script, read permissions on the co
 9.) Add the service to start at boot.
 
     update-rc.d no-ip-service defaults
-
-
-
