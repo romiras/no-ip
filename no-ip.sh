@@ -1,5 +1,6 @@
-USER=""
-PASSWORD=""
+#!/bin/bash 
+
+BASE64AUTH=""
 HOSTNAME=""
 LOGFILE=""
 DETECTIP=""
@@ -16,11 +17,8 @@ fi
 for i in "$@"
 do
 	case $i in
-		-u=*|--user=*)
-		USER="${i#*=}"
-		;;
-		-p=*|--password=*)
-		PASSWORD="${i#*=}"
+		-a=*|--auth=*)
+		BASE64AUTH="${i#*=}"
 		;;
 		-l=*|--logfile=*)
 		LOGFILE="${i#*=}"
@@ -50,13 +48,10 @@ if [ -n "$CONFIG" ] && [ -f "$CONFIG" ]
 then
 	while read line
 	do 
-		echo $line	
+		#echo $line	
 		case $line in
-			user=*)
-			USER="${line#*=}"
-			;;
-			password=*)
-			PASSWORD="${line#*=}"
+			auth=*)
+			BASE64AUTH="${line#*=}"
 			;;
 			logfile=*)
 			LOGFILE="${line#*=}"
@@ -83,18 +78,10 @@ else
 fi
 
 
-echo "$USER"
-
-if [ -z "$USER" ]
+if [ -z "$BASE64AUTH" ]
 then
-	echo "No user was set. Use -u=username"
+	echo "No auth was set. Use -a=auth"
 	exit 10
-fi
-
-if [ -z "$PASSWORD" ]
-then
-	echo "No password was set. Use -p=password"
-	exit 20
 fi
 
 
@@ -125,9 +112,9 @@ fi
 
 
 USERAGENT="--user-agent=\"no-ip shell script/1.0 mail@mail.com\""
-BASE64AUTH=$(echo '"$USER:$PASSWORD"' | base64)
 AUTHHEADER="--header=\"Authorization: $BASE64AUTH\""
-NOIPURL="https://$USER:$PASSWORD@dynupdate.no-ip.com/nic/update"
+AUTH=$(echo "$BASE64AUTH" | base64 -d)
+NOIPURL="https://$AUTH@dynupdate.no-ip.com/nic/update"
 
 
 if [ -n "$IP" ] || [ -n "$HOSTNAME" ]
